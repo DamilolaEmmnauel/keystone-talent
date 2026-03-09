@@ -12,6 +12,15 @@ Recreated from a Webflow export (`keystonetalent.webflow/` folder kept as refere
 - **Deploy flow:** Push to `main` on GitHub → auto-deploys to Vercel
 - **Vercel account:** dammyakins9-9089
 - **GitHub account:** DamilolaEmmnauel
+- **Clean URLs:** Enabled via `vercel.json` (`cleanUrls: true`) — no `.html` extensions in URLs
+
+## URL Routing
+- `/` → index.html (homepage)
+- `/privacy-policy` → privacy-policy.html
+- `/terms-of-service` → terms-of-service.html
+- Vercel auto-redirects `.html` URLs to clean versions
+- All internal links use clean paths (`/privacy-policy`, `/terms-of-service`, `/`)
+- Subpage nav links use `/#section` format (e.g., `/#reality`, `/#services`)
 
 ## Project Structure
 ```
@@ -21,6 +30,7 @@ Recreated from a Webflow export (`keystonetalent.webflow/` folder kept as refere
 ├── 401.html                # Password-protected page
 ├── 404.html                # Not found page
 ├── style-guide.html        # Webflow style guide reference
+├── vercel.json             # Vercel config (cleanUrls)
 ├── css/
 │   ├── normalize.css
 │   ├── webflow.css
@@ -57,6 +67,11 @@ Recreated from a Webflow export (`keystonetalent.webflow/` folder kept as refere
 | Secondary text      | `#444`     |
 | Borders/dividers    | `#e5decf`  |
 
+### Tagline Pill Variants
+- **Default** (`.tagline`): beige bg `#f2eee5`, dark dot `#050e15` — used on white background sections
+- **Header** (`.tagline.is-header`): white bg `#fff`, gold dot `#c9a87f` — used on beige background sections (hero, legal page headers)
+- **Services** (`.tagline.is-services`): darker beige bg `#e5decf` — used on services section
+
 ### Spacing Pattern
 All sections follow: `.padding-global > .container-large > .padding-section-large`
 
@@ -78,19 +93,19 @@ Pill-shaped (`border-radius: 90px`), hover lifts up (`translateY(-8px)`). Varian
 ## Legal Pages
 - `privacy-policy.html` and `terms-of-service.html` were created manually (not from Webflow)
 - They share the same navbar and footer as index.html
-- Navbar links use `index.html#section` prefix since they're separate pages
-- Footer links on new pages use `index.html#section` for Company nav
-- Active legal page is highlighted with white bold text in footer (`.is-active` class)
-- Both pages use `legal-page_header-content` wrapper for centered headers
-- The `color: inherit` global style override is included inline (required for footer icon colors)
+- Navbar and footer links use `/#section` format for homepage anchors
+- Active legal page is highlighted with white bold text in footer (`.footer_legal-link.is-active` class)
+- Both pages use `.legal-page_header-content` wrapper for centered headers
+- Tagline pill uses `.is-header` variant (white bg, gold dot) to contrast with beige section background
+- The `color: inherit` global style override is included inline (required for footer icon/link colors on dark bg)
 
 ## Cookie Consent
 - `js/cookie-consent.js` — standalone, no dependencies beyond vanilla JS
 - Triggered by clicking the "Cookies" footer link (`.cookie-trigger` class)
-- Centered modal with backdrop overlay
+- Centered modal (vertically and horizontally) with dark backdrop overlay
 - 4 categories: Essential (always on), Analytics, Functional, Marketing
-- Toggle switches with gold active state
-- 3 buttons: Decline All, Save Preferences, Accept All
+- Toggle switches with gold active state (`#c9a87f`)
+- 3 buttons: Decline All, Save Preferences, Accept All (gold accent)
 - Preferences saved to `localStorage` under key `kt_cookie_preferences`
 - Loaded on all pages via `<script src="js/cookie-consent.js">`
 
