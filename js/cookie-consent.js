@@ -255,7 +255,7 @@
       + '  </button>'
       + '</div>'
       + '<div class="cookie-popup_description">'
-      + '  We use cookies to improve your experience on our website. You can choose which categories of cookies you allow below. For more details, see our <a href="privacy-policy.html" style="color:#c9a87f;text-decoration:underline;">Privacy Policy</a>.'
+      + '  We use cookies to improve your experience on our website. You can choose which categories of cookies you allow below. For more details, see our <a href="/privacy-policy" style="color:#c9a87f;text-decoration:underline;">Privacy Policy</a>.'
       + '</div>'
       + '<div class="cookie-popup_categories">'
       + '  <div class="cookie-category">'
