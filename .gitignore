@@ -1,0 +1,9 @@
+# Original Webflow export (reference only)
+keystonetalent.webflow/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/
