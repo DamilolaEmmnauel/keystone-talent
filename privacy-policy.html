@@ -25,12 +25,34 @@
   -moz-osx-font-smoothing: grayscale;
   -o-font-smoothing: antialiased;
 }
+/* Global style overrides (from main site) */
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-nav-brand,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-slider-arrow-left,
+.w-slider-arrow-right,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
 .legal-page_component {
   display: flex;
   flex-direction: column;
 }
 .legal-page_header {
   background-color: #f2eee5;
+}
+.legal-page_header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .legal-page_body h3 {
   font-family: Georgia, Times, "Times New Roman", serif;
@@ -70,6 +92,10 @@
   width: 100%;
   height: 1px;
   background-color: #e5decf;
+}
+.footer_legal-link.is-active {
+  color: #fff;
+  font-weight: 700;
 }
 </style>
 </head>
@@ -114,14 +140,16 @@
           <div class="padding-global">
             <div class="container-large">
               <div class="padding-section-large">
-                <div class="tagline">
-                  <div class="tagline-dot"></div>
-                  <div class="text-style-subheading">Legal</div>
+                <div class="legal-page_header-content">
+                  <div class="tagline">
+                    <div class="tagline-dot"></div>
+                    <div class="text-style-subheading">Legal</div>
+                  </div>
+                  <div class="spacer-small"></div>
+                  <h1 class="heading-style-h1">Privacy Policy</h1>
+                  <div class="spacer-xsmall"></div>
+                  <div class="legal-page_date">Last updated: March 9, 2026</div>
                 </div>
-                <div class="spacer-small"></div>
-                <h1 class="heading-style-h1">Privacy Policy</h1>
-                <div class="spacer-xsmall"></div>
-                <div class="legal-page_date">Last updated: March 9, 2026</div>
               </div>
             </div>
           </div>
@@ -317,7 +345,7 @@
                 <div class="footer_bottom-wrapper">
                   <div class="w-layout-grid footer_legal-list">
                     <div class="footer_credit-text">&copy; 2026 Keystone Talent.</div>
-                    <a href="privacy-policy.html" class="footer_legal-link">Privacy</a>
+                    <a href="privacy-policy.html" class="footer_legal-link is-active">Privacy</a>
                     <a href="terms-of-service.html" class="footer_legal-link">Terms </a>
                     <a href="#" class="footer_legal-link">Cookies</a>
                   </div>
