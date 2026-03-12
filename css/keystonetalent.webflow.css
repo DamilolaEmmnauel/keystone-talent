@@ -2104,7 +2104,7 @@ figcaption {
   align-items: center;
   height: auto;
   padding-bottom: 5rem;
-  display: none;
+  display: flex;
 }
 
 .testimonial_slide {
