@@ -5,35 +5,64 @@
 <title>Keystonetalent Email Signatures</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f4; padding: 40px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f4; padding: 40px 40px 80px; }
+
+  /* Page header */
+  .page-header { max-width: 1200px; margin: 0 auto 32px; display: flex; align-items: center; justify-content: space-between; }
+  .page-header h1 { font-size: 22px; color: #1D1D1D; font-weight: 700; font-family: Georgia, 'Times New Roman', serif; }
+  .page-header-left { display: flex; align-items: center; gap: 14px; }
+  .help-toggle { background: none; border: 1px solid #d6d3d1; color: #78716c; padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+  .help-toggle:hover { border-color: #C9A87F; color: #1D1D1D; }
+
+  /* Layout */
   .page-layout { display: flex; gap: 40px; max-width: 1200px; margin: 0 auto; align-items: flex-start; }
-  .left-col { flex: 0 0 520px; }
+  .left-col { flex: 0 0 500px; }
   .right-col { flex: 1; position: sticky; top: 40px; }
 
+  /* Instructions (collapsible) */
+  .instructions { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; display: none; }
+  .instructions.open { display: block; }
+  .instructions h2 { font-size: 15px; color: #1D1D1D; margin-bottom: 10px; }
+  .instructions ol { color: #44403c; line-height: 1.7; padding-left: 18px; font-size: 13px; }
+  .instructions p { color: #78716c; font-size: 13px; margin-top: 10px; }
+
+  /* Section labels */
+  .section-label { font-size: 11px; font-weight: 600; color: #a8a29e; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; padding-left: 4px; }
+
   /* Signature cards */
-  .sig-wrapper { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+  .sig-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .sig-wrapper { background: #fff; border-radius: 10px; padding: 24px 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); cursor: pointer; border: 2px solid transparent; transition: all 0.15s; position: relative; }
   .sig-wrapper:hover { border-color: #e5decf; }
-  .sig-wrapper.active { border-color: #C9A87F; }
+  .sig-wrapper.active { border-color: #C9A87F; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(201,168,127,0.2); }
   .sig-label { display: none; }
-  .copy-btn { background: #1D1D1D; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 32px; }
-  .copy-btn:hover { background: #44403c; }
-  .instructions { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px 32px; margin-bottom: 40px; }
-  .instructions h2 { margin-top: 0; font-size: 18px; color: #1D1D1D; }
-  .instructions ol { color: #44403c; line-height: 1.7; padding-left: 20px; }
+
+  /* Card actions */
+  .card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+  .sig-wrapper:hover .card-actions, .sig-wrapper.active .card-actions { opacity: 1; }
+  .action-btn { background: #f5f5f4; border: 1px solid #e7e5e4; color: #44403c; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .action-btn:hover { background: #1D1D1D; color: #fff; border-color: #1D1D1D; }
+  .action-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .action-btn.delete:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
   /* Create form */
-  .create-form { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px 32px; margin-bottom: 40px; }
-  .create-form h2 { margin-top: 0; font-size: 18px; color: #1D1D1D; margin-bottom: 16px; }
-  .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
-  .form-row.full { display: block; }
+  .create-section { border: 2px dashed #d6d3d1; border-radius: 10px; padding: 20px 28px; transition: all 0.2s; }
+  .create-section:hover { border-color: #C9A87F; }
+  .create-trigger { display: flex; align-items: center; gap: 10px; cursor: pointer; color: #78716c; font-size: 14px; font-weight: 500; }
+  .create-trigger:hover { color: #1D1D1D; }
+  .create-trigger .plus { width: 28px; height: 28px; border-radius: 50%; background: #f5f5f4; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 300; color: #78716c; transition: all 0.15s; }
+  .create-trigger:hover .plus { background: #C9A87F; color: #fff; }
+  .create-form { display: none; }
+  .create-form.open { display: block; }
+  .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
   .form-field { flex: 1; }
-  .form-field label { display: block; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
+  .form-field label { display: block; font-size: 11px; font-weight: 600; color: #a8a29e; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
   .form-field input { width: 100%; padding: 8px 12px; border: 1px solid #d6d3d1; border-radius: 6px; font-size: 14px; font-family: inherit; color: #1D1D1D; background: #fff; }
   .form-field input:focus { outline: none; border-color: #C9A87F; }
-  .create-btn { background: #C9A87F; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
-  .create-btn:hover { background: #b8956e; }
-  .delete-btn { background: none; border: none; color: #a8a29e; font-size: 12px; cursor: pointer; margin-left: 8px; }
-  .delete-btn:hover { color: #ef4444; }
+  .form-buttons { display: flex; gap: 8px; margin-top: 4px; }
+  .btn-create { background: #C9A87F; color: #fff; border: none; padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn-create:hover { background: #b8956e; }
+  .btn-cancel { background: none; border: 1px solid #d6d3d1; color: #78716c; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .btn-cancel:hover { border-color: #a8a29e; color: #44403c; }
 
   /* Gmail preview */
   .gmail-preview { background: #c8cfc4; border-radius: 16px; padding: 16px; }
@@ -54,6 +83,7 @@
   .gmail-body-line:nth-child(2) { width: 60%; }
   .gmail-separator { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
   .gmail-sig-container { padding-top: 0; }
+  .preview-label { font-size: 11px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; text-align: center; }
 
   @media (max-width: 1100px) {
     .page-layout { flex-direction: column; }
@@ -64,191 +94,188 @@
 </head>
 <body>
 
+<div class="page-header">
+  <div class="page-header-left">
+    <img src="data:image/png;base64,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" alt="Keystone Talent" width="32" style="border-radius: 4px;" />
+    <h1>Email Signatures</h1>
+  </div>
+  <button class="help-toggle" onclick="toggleHelp()">How to use</button>
+</div>
+
 <div class="page-layout">
   <div class="left-col">
-    <div class="instructions">
-      <h2>How to add these signatures in Gmail</h2>
+    <div class="instructions" id="help-panel">
+      <h2>Adding signatures to Gmail</h2>
       <ol>
-        <li>Click the <strong>Copy HTML</strong> button below each signature</li>
-        <li>Open Gmail &rarr; Settings (&Congruent;) &rarr; <strong>See all settings</strong></li>
-        <li>Scroll to the <strong>Signature</strong> section</li>
-        <li>Click <strong>+ Create new</strong>, name it (e.g. "Keystone Talent")</li>
-        <li>In the signature editor, press <strong>Ctrl+A</strong> (or Cmd+A) then <strong>Ctrl+V</strong> (Cmd+V) to paste</li>
-        <li>Save changes at the bottom of the page</li>
+        <li>Click <strong>Copy</strong> on the signature you want</li>
+        <li>Open Gmail &rarr; Settings &rarr; <strong>See all settings</strong></li>
+        <li>Scroll to <strong>Signature</strong>, click <strong>+ Create new</strong></li>
+        <li>Press <strong>Ctrl+A</strong> (Cmd+A) then <strong>Ctrl+V</strong> (Cmd+V) to paste</li>
+        <li>Save changes</li>
       </ol>
-      <p style="color:#78716c; font-size: 14px; margin-top: 12px; margin-bottom: 0;"><strong>Note:</strong> If pasting loses formatting, paste into the Gmail signature editor using right-click &rarr; "Paste as rich text."</p>
+      <p><strong>Tip:</strong> If formatting is lost, use right-click &rarr; "Paste as rich text."</p>
     </div>
 
-    <!-- ===================== 1. memory@ ===================== -->
-    <div class="sig-wrapper active" onclick="selectSignature('sig-memory', this)">
-      <div class="sig-label">memory@keystonetalent.xyz</div>
-      <div id="sig-memory">
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
-          <tr>
-            <td style="padding-right: 14px; vertical-align: top;">
-              <a href="https://keystonetalent.xyz" style="text-decoration: none;">
-                <img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />
-              </a>
-            </td>
-            <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Memory Naggita</td></tr>
-                <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Founder & CEO</td></tr>
-              </table>
-            </td>
-            <td style="padding-left: 16px; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
-                <tr><td style="padding-bottom: 3px;"><a href="mailto:memory@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">memory@keystonetalent.xyz</a></td></tr>
-                <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
-                <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="padding-top: 12px;">
-              <table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <button class="copy-btn" onclick="copySignature('sig-memory', event)">Copy HTML</button>
-
-    <!-- ===================== 2. hello@ ===================== -->
-    <div class="sig-wrapper" onclick="selectSignature('sig-hello', this)">
-      <div class="sig-label">hello@keystonetalent.xyz</div>
-      <div id="sig-hello">
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
-          <tr>
-            <td style="padding-right: 14px; vertical-align: top;">
-              <a href="https://keystonetalent.xyz" style="text-decoration: none;">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAqCAYAAADxughHAAAABmJLR0QA/wD/AP+gvaeTAAAJaElEQVRogcWZe3DU1RXHP+f+8hAQqNSOFREUBhWpqDRmI8UqYBUtba3oZqOO1akFbWfaqRV8oOSayDDVztiZSh1pp1OhSZZ11Fqsj6kYLIRkk/jElNZRW21VBOWhiDHZvad/7O5vf9nd7C4pbc9MZvbe8/z+7jn3nnsjFKHe9bcdm6isXFdM5n9FyQG58itX213D8aWUgXi08UXgjMMa1SGT9IQitraYhCllQpEHD19AIyNVVzKGilICyQFaK6rkbtBKAIHNwGv/eXjDk8IpwFfTwwGpHoyW0imZWgDdGxofU+Wb6eG6UOTO74wwxrKoK2qjgtYDCPJwbcReVkqnZGoBoMH0ksVbH1s+doQxlqTe2M3jBf+jgZROKygjtQDGGB4/4PgAOBp0TNXB0YuB3xYLJuGOuEWQb4Aen55+VVVbKz7aubZm6drB4XSTrjoCOioFgl1m386nyomxrBWZGbYDQDZPRYdNrZ4WOzXpRm0XuAV0JjAu/TdHRO5Ljp/Y+ULs1i8M60xNwLa0FAMdpPJSC4akl6Ln9rTYqbki7e22wnn6WGAVChn68qCr3qCaX59dLbdPR1xdVjRZ9o5ZNpBQg+0VZHtqJJL0uCpXZswuIsCX/DiQJ5PGzdJk8iSQ9VlJnReP2Yty9aXCuwZEAATZHoo0v1xufBXxtpXfRsqrFRVeRzkt5YirVWkWQX2+BooUXq3Y/+63Mqmh1l7TfYqcAHoOAI5LgCd8XWtNt6r/cRT9Z1fULiknLqMMVIBZBnp2OQqoBgfTuqN3zIXmLYG56f5PkfXB/BZrXXfUPqFwTorNkNTsncF8lMmBqYsFvbissIQ/G0U3lQWiEImXU/QSKEw3KlfcoScH3H8a5CXd8BtISVJpNxh9dsQG0Mt7N9rRgYnegPEf9kStXy/xqF0kBOpK1Jdtj9kjRbhk5HEkN0lfzFYdcLoXGA1gxM09q765YyTmOqN2tkF7yG4iCVQ6EK0GDWUKGRjwjEyvCdu3R+Knu23lAhV5Jj08OGHcnglmZtgOKGzLCKmaC0ZiHMAzybEIHwSmKhA9F6gLgEBUlo0UBICKBGKULdMv/sVnFQAG2aTo+QCKXAg0HorhrlY7S4yuVkeJ4pS9qFs2xpP1XdHGNYJUA3eHIvZQm9AsEHXtKQwAJIMFXxN/5NbPl2NNrTXxNnubGH0eCoGQ3Yp0oPIgqtdVVTNVNfH4AdUnBb4P+l3gpa7oyh8VOiALUVfrbceAnp6dMZsg3Wv9w/z1hSlu5l7Qo0A9GaxeAMSKGeyO2S/Gna4XOD8n+PdF3RoVs6HQl463WYtq4KKmowT5eXescWFvrD9SE/7p/mJ+jVf1NVXNgN73ltf3IqRXJBx+KAn6nG9aKVonnW32BHVsywcBqm5ZbUNT83DpEmqwVkRuyGMoC5NuVEdnmz2hmO+c2DanYh/Sokg2vUQvHM5QT4udaoTNoCcW4ovIuni0sTPeaufn8jrb7HnxNrtZVTcME+ZMT7QjHrUnDQNCkOzHE5X2zG8fiCORBaJM6orZU3MN9bbao52n7aBTfNMqbcCbOaJ1GL2/N2YnA3S32TnxNrvZiLand7Eg9B2I/DHrmonAs1vb7MRc/z0P2dNRPdbXFPwz0AdyduSuHSDv+EJJN2RV1FqT9HQ9ZNoIVeCGUIO9wtv/3img1yPyHjCgIs0Txu2ZNZjEdEVtVMVtLQCgXZxcVFtvZ4bq7SIRXZLtgfS4SuF3sdjl3pAYgmkl7Kqpt315QFKC6i8VRobUSXyGuxllYVZWVoUiTQ8A1CxdOxiKND3g7Xt3ClUDE53sX/3hRxOsEd2RurJmzhBVQR4WXG0oYufXXmGfyjSdtfVNv1I1ywPRzJusM5YHYyAIxMmmYMM6BIgJ1onKudtiPx4F0NGyYoqoyZ4twlOhv0neWVOzdO2gJKqP99y43tTFiiMC9p5DTW1txF5m9r//Uq4uQF2D/Rnwe9+NmhXbYiuOA0i3QnN9nnHtQd0hQBLe4J8C8EeZxNi5ABVeZTNoddrEfh2U74m1LjeQeNQuUqcdQKC+ZDcqV4Ya7HlG6I9HG59Ojj92V7xt5dcLgak0A0uAPekYxnjJylUAiYOcl40BjLohPWLeIRSP2tf8dtzJAoUPxOiLPmjVG0MNTffm6nVtWLlYVKIE3gEUHqkyA9fPDq/e3Ru9fVoS7xXSPR3IoIhbXFvftDHPVpu9SUTvSQ8TmpATpdLNRCVzf387FLlzSlAn/4aoflu/z/v43S1iuM6XE/51sN/cn6vSGbWzRWVdFoQkQZeH6u+8bHZ49W6Amshdb4hoBDiYdlSpaloK7Y7O278G5P30sAJPlx4pph3k41QYknf1yAOiGSGVJ988aq8DwhmeqKyZd63tD8r3PrCk0kArgS/tlEtDkaZ7gsUIUFvftBF1C4EDaW9jxemjL6+7aUxQbk743k+R7CuNiFx76uV2ENGnUxPkXT3ygEj1Z+2AA7dpcmLGfNBj0qwEJv8JKDF+4g/wL0ySFOGqsxvsH3LlMhRqaN6C6tWB6+ZJ/ZWj86+0ym8Cg+N6o3ecgcpGgIQMtueK5wEJXbr6Q5CXPXGbjRF/l0Dpqg3bnUN8WWtE9Cf+R4D7autt0R4tBabpURHJ1oaRG/titmqITKrFeT0zdngXJQ2Pg/TNCa96hxwa7hXllzWRu95QmJWV1GdyhXpOdvNQJqVQyHsuwcpSIPzAxDX5A2XSJ45FuTJCIIVEz5oTtnsQt6qQvYJAQhH767T2aVk7ZnuunIqZ5/9WWuuush+VAwKgLtz8vCrdvj4FrroqfdmBTAeoDTcVfNAu8a6VfWhTkm8U4J/pu1G3o7itfBKRYPOY1ygqLuBTp6V0hm4gGSr1QOefCUnjfZIXCOIDFWM+K2ErjwSX2WIJ3DF8UpPZqiF4GBaiUkB8vhlM5DtKven+18jDBJpGKXqDHBaIWmuAbBtSYSYVkBp/6OGVT0mCD3aSlxFBGvapVKx18aj9u5+bahZsabnFb/a8yiMEp4dtRUzg2VatNVun94/HURdoov5STL/om6+I9qkyLW1+RZVXvcJnuoI1N2JS9Mx4tPEtRCq7laOrqK4kUNeK9hVRL14jqtpdjH94SQSYnLoBpv5fOYSLPlFAyafiQJzJ60z/T7Tv4KfFYymaWnVX2Fe6WldeIIbPlfI0mEgc8uoZY7YknQuXFFTdOe/a5v5iIv8GFRjCaMRV/cAAAAAASUVORK5CYII=" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />
-              </a>
-            </td>
-            <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
-                <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">People Operations</td></tr>
-              </table>
-            </td>
-            <td style="padding-left: 16px; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
-                <tr><td style="padding-bottom: 3px;"><a href="mailto:hello@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">hello@keystonetalent.xyz</a></td></tr>
-                <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
-                <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="padding-top: 12px;">
-              <table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <button class="copy-btn" onclick="copySignature('sig-hello', event)">Copy HTML</button>
-
-    <!-- ===================== 3. support@ ===================== -->
-    <div class="sig-wrapper" onclick="selectSignature('sig-support', this)">
-      <div class="sig-label">support@keystonetalent.xyz</div>
-      <div id="sig-support">
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
-          <tr>
-            <td style="padding-right: 14px; vertical-align: top;">
-              <a href="https://keystonetalent.xyz" style="text-decoration: none;">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAqCAYAAADxughHAAAABmJLR0QA/wD/AP+gvaeTAAAJaElEQVRogcWZe3DU1RXHP+f+8hAQqNSOFREUBhWpqDRmI8UqYBUtba3oZqOO1akFbWfaqRV8oOSayDDVztiZSh1pp1OhSZZ11Fqsj6kYLIRkk/jElNZRW21VBOWhiDHZvad/7O5vf9nd7C4pbc9MZvbe8/z+7jn3nnsjFKHe9bcdm6isXFdM5n9FyQG58itX213D8aWUgXi08UXgjMMa1SGT9IQitraYhCllQpEHD19AIyNVVzKGilICyQFaK6rkbtBKAIHNwGv/eXjDk8IpwFfTwwGpHoyW0imZWgDdGxofU+Wb6eG6UOTO74wwxrKoK2qjgtYDCPJwbcReVkqnZGoBoMH0ksVbH1s+doQxlqTe2M3jBf+jgZROKygjtQDGGB4/4PgAOBp0TNXB0YuB3xYLJuGOuEWQb4Aen55+VVVbKz7aubZm6drB4XSTrjoCOioFgl1m386nyomxrBWZGbYDQDZPRYdNrZ4WOzXpRm0XuAV0JjAu/TdHRO5Ljp/Y+ULs1i8M60xNwLa0FAMdpPJSC4akl6Ln9rTYqbki7e22wnn6WGAVChn68qCr3qCaX59dLbdPR1xdVjRZ9o5ZNpBQg+0VZHtqJJL0uCpXZswuIsCX/DiQJ5PGzdJk8iSQ9VlJnReP2Yty9aXCuwZEAATZHoo0v1xufBXxtpXfRsqrFRVeRzkt5YirVWkWQX2+BooUXq3Y/+63Mqmh1l7TfYqcAHoOAI5LgCd8XWtNt6r/cRT9Z1fULiknLqMMVIBZBnp2OQqoBgfTuqN3zIXmLYG56f5PkfXB/BZrXXfUPqFwTorNkNTsncF8lMmBqYsFvbissIQ/G0U3lQWiEImXU/QSKEw3KlfcoScH3H8a5CXd8BtISVJpNxh9dsQG0Mt7N9rRgYnegPEf9kStXy/xqF0kBOpK1Jdtj9kjRbhk5HEkN0lfzFYdcLoXGA1gxM09q765YyTmOqN2tkF7yG4iCVQ6EK0GDWUKGRjwjEyvCdu3R+Knu23lAhV5Jj08OGHcnglmZtgOKGzLCKmaC0ZiHMAzybEIHwSmKhA9F6gLgEBUlo0UBICKBGKULdMv/sVnFQAG2aTo+QCKXAg0HorhrlY7S4yuVkeJ4pS9qFs2xpP1XdHGNYJUA3eHIvZQm9AsEHXtKQwAJIMFXxN/5NbPl2NNrTXxNnubGH0eCoGQ3Yp0oPIgqtdVVTNVNfH4AdUnBb4P+l3gpa7oyh8VOiALUVfrbceAnp6dMZsg3Wv9w/z1hSlu5l7Qo0A9GaxeAMSKGeyO2S/Gna4XOD8n+PdF3RoVs6HQl463WYtq4KKmowT5eXescWFvrD9SE/7p/mJ+jVf1NVXNgN73ltf3IqRXJBx+KAn6nG9aKVonnW32BHVsywcBqm5ZbUNT83DpEmqwVkRuyGMoC5NuVEdnmz2hmO+c2DanYh/Sokg2vUQvHM5QT4udaoTNoCcW4ovIuni0sTPeaufn8jrb7HnxNrtZVTcME+ZMT7QjHrUnDQNCkOzHE5X2zG8fiCORBaJM6orZU3MN9bbao52n7aBTfNMqbcCbOaJ1GL2/N2YnA3S32TnxNrvZiLand7Eg9B2I/DHrmonAs1vb7MRc/z0P2dNRPdbXFPwz0AdyduSuHSDv+EJJN2RV1FqT9HQ9ZNoIVeCGUIO9wtv/3img1yPyHjCgIs0Txu2ZNZjEdEVtVMVtLQCgXZxcVFtvZ4bq7SIRXZLtgfS4SuF3sdjl3pAYgmkl7Kqpt315QFKC6i8VRobUSXyGuxllYVZWVoUiTQ8A1CxdOxiKND3g7Xt3ClUDE53sX/3hRxOsEd2RurJmzhBVQR4WXG0oYufXXmGfyjSdtfVNv1I1ywPRzJusM5YHYyAIxMmmYMM6BIgJ1onKudtiPx4F0NGyYoqoyZ4twlOhv0neWVOzdO2gJKqP99y43tTFiiMC9p5DTW1txF5m9r//Uq4uQF2D/Rnwe9+NmhXbYiuOA0i3QnN9nnHtQd0hQBLe4J8C8EeZxNi5ABVeZTNoddrEfh2U74m1LjeQeNQuUqcdQKC+ZDcqV4Ya7HlG6I9HG59Ojj92V7xt5dcLgak0A0uAPekYxnjJylUAiYOcl40BjLohPWLeIRSP2tf8dtzJAoUPxOiLPmjVG0MNTffm6nVtWLlYVKIE3gEUHqkyA9fPDq/e3Ru9fVoS7xXSPR3IoIhbXFvftDHPVpu9SUTvSQ8TmpATpdLNRCVzf387FLlzSlAn/4aoflu/z/v43S1iuM6XE/51sN/cn6vSGbWzRWVdFoQkQZeH6u+8bHZ49W6Amshdb4hoBDiYdlSpaloK7Y7O278G5P30sAJPlx4pph3k41QYknf1yAOiGSGVJ988aq8DwhmeqKyZd63tD8r3PrCk0kArgS/tlEtDkaZ7gsUIUFvftBF1C4EDaW9jxemjL6+7aUxQbk743k+R7CuNiFx76uV2ENGnUxPkXT3ygEj1Z+2AA7dpcmLGfNBj0qwEJv8JKDF+4g/wL0ySFOGqsxvsH3LlMhRqaN6C6tWB6+ZJ/ZWj86+0ym8Cg+N6o3ecgcpGgIQMtueK5wEJXbr6Q5CXPXGbjRF/l0Dpqg3bnUN8WWtE9Cf+R4D7autt0R4tBabpURHJ1oaRG/titmqITKrFeT0zdngXJQ2Pg/TNCa96hxwa7hXllzWRu95QmJWV1GdyhXpOdvNQJqVQyHsuwcpSIPzAxDX5A2XSJ45FuTJCIIVEz5oTtnsQt6qQvYJAQhH767T2aVk7ZnuunIqZ5/9WWuuush+VAwKgLtz8vCrdvj4FrroqfdmBTAeoDTcVfNAu8a6VfWhTkm8U4J/pu1G3o7itfBKRYPOY1ygqLuBTp6V0hm4gGSr1QOefCUnjfZIXCOIDFWM+K2ErjwSX2WIJ3DF8UpPZqiF4GBaiUkB8vhlM5DtKven+18jDBJpGKXqDHBaIWmuAbBtSYSYVkBp/6OGVT0mCD3aSlxFBGvapVKx18aj9u5+bahZsabnFb/a8yiMEp4dtRUzg2VatNVun94/HURdoov5STL/om6+I9qkyLW1+RZVXvcJnuoI1N2JS9Mx4tPEtRCq7laOrqK4kUNeK9hVRL14jqtpdjH94SQSYnLoBpv5fOYSLPlFAyafiQJzJ60z/T7Tv4KfFYymaWnVX2Fe6WldeIIbPlfI0mEgc8uoZY7YknQuXFFTdOe/a5v5iIv8GFRjCaMRV/cAAAAAASUVORK5CYII=" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />
-              </a>
-            </td>
-            <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
-                <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Client Support</td></tr>
-              </table>
-            </td>
-            <td style="padding-left: 16px; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
-                <tr><td style="padding-bottom: 3px;"><a href="mailto:support@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">support@keystonetalent.xyz</a></td></tr>
-                <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
-                <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="padding-top: 12px;">
-              <table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <button class="copy-btn" onclick="copySignature('sig-support', event)">Copy HTML</button>
-
-    <!-- ===================== 4. finance@ ===================== -->
-    <div class="sig-wrapper" onclick="selectSignature('sig-finance', this)">
-      <div class="sig-label">finance@keystonetalent.xyz</div>
-      <div id="sig-finance">
-        <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
-          <tr>
-            <td style="padding-right: 14px; vertical-align: top;">
-              <a href="https://keystonetalent.xyz" style="text-decoration: none;">
-                <img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />
-              </a>
-            </td>
-            <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
-                <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Finance & Billing</td></tr>
-              </table>
-            </td>
-            <td style="padding-left: 16px; vertical-align: top;">
-              <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
-                <tr><td style="padding-bottom: 3px;"><a href="mailto:finance@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">finance@keystonetalent.xyz</a></td></tr>
-                <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
-                <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="padding-top: 12px;">
-              <table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <button class="copy-btn" onclick="copySignature('sig-finance', event)">Copy HTML</button>
-
-    <div id="custom-signatures"></div>
-
-    <div class="create-form">
-      <h2>Create New Signature</h2>
-      <div class="form-row">
-        <div class="form-field">
-          <label>Name</label>
-          <input type="text" id="new-name" placeholder="e.g. Memory Naggita">
+    <div class="section-label">Team Signatures</div>
+    <div class="sig-list">
+      <!-- 1. memory@ -->
+      <div class="sig-wrapper active" onclick="selectSignature('sig-memory', this)">
+        <div class="card-actions">
+          <button class="action-btn" onclick="copySignature('sig-memory', event, this)">Copy</button>
         </div>
-        <div class="form-field">
-          <label>Title / Role</label>
-          <input type="text" id="new-title" placeholder="e.g. Founder & CEO">
+        <div id="sig-memory">
+          <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
+            <tr>
+              <td style="padding-right: 14px; vertical-align: top;">
+                <a href="https://keystonetalent.xyz" style="text-decoration: none;">
+                  <img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />
+                </a>
+              </td>
+              <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Memory Naggita</td></tr>
+                  <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Founder & CEO</td></tr>
+                </table>
+              </td>
+              <td style="padding-left: 16px; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
+                  <tr><td style="padding-bottom: 3px;"><a href="mailto:memory@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">memory@keystonetalent.xyz</a></td></tr>
+                  <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
+                  <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr><td colspan="2" style="padding-top: 12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table></td></tr>
+          </table>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-field">
-          <label>Email</label>
-          <input type="email" id="new-email" placeholder="e.g. name@keystonetalent.xyz">
+
+      <!-- 2. hello@ -->
+      <div class="sig-wrapper" onclick="selectSignature('sig-hello', this)">
+        <div class="card-actions">
+          <button class="action-btn" onclick="copySignature('sig-hello', event, this)">Copy</button>
         </div>
-        <div class="form-field">
-          <label>Phone</label>
-          <input type="tel" id="new-phone" placeholder="e.g. +256 783 212 379">
+        <div id="sig-hello">
+          <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
+            <tr>
+              <td style="padding-right: 14px; vertical-align: top;"><a href="https://keystonetalent.xyz" style="text-decoration: none;"><img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" /></a></td>
+              <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
+                  <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">People Operations</td></tr>
+                </table>
+              </td>
+              <td style="padding-left: 16px; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
+                  <tr><td style="padding-bottom: 3px;"><a href="mailto:hello@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">hello@keystonetalent.xyz</a></td></tr>
+                  <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
+                  <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr><td colspan="2" style="padding-top: 12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table></td></tr>
+          </table>
         </div>
       </div>
-      <button class="create-btn" onclick="createSignature()">Create Signature</button>
+
+      <!-- 3. support@ -->
+      <div class="sig-wrapper" onclick="selectSignature('sig-support', this)">
+        <div class="card-actions">
+          <button class="action-btn" onclick="copySignature('sig-support', event, this)">Copy</button>
+        </div>
+        <div id="sig-support">
+          <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
+            <tr>
+              <td style="padding-right: 14px; vertical-align: top;"><a href="https://keystonetalent.xyz" style="text-decoration: none;"><img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" /></a></td>
+              <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
+                  <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Client Support</td></tr>
+                </table>
+              </td>
+              <td style="padding-left: 16px; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
+                  <tr><td style="padding-bottom: 3px;"><a href="mailto:support@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">support@keystonetalent.xyz</a></td></tr>
+                  <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
+                  <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr><td colspan="2" style="padding-top: 12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. finance@ -->
+      <div class="sig-wrapper" onclick="selectSignature('sig-finance', this)">
+        <div class="card-actions">
+          <button class="action-btn" onclick="copySignature('sig-finance', event, this)">Copy</button>
+        </div>
+        <div id="sig-finance">
+          <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; color: #1D1D1D; line-height: 1.4;">
+            <tr>
+              <td style="padding-right: 14px; vertical-align: top;"><a href="https://keystonetalent.xyz" style="text-decoration: none;"><img src="data:image/png;base64,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" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" /></a></td>
+              <td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, 'Times New Roman', serif; padding-bottom: 2px;">Keystone Talent</td></tr>
+                  <tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">Finance & Billing</td></tr>
+                </table>
+              </td>
+              <td style="padding-left: 16px; vertical-align: top;">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; color: #44403c;">
+                  <tr><td style="padding-bottom: 3px;"><a href="mailto:finance@keystonetalent.xyz" style="color: #44403c; text-decoration: none;">finance@keystonetalent.xyz</a></td></tr>
+                  <tr><td style="padding-bottom: 3px;"><a href="tel:+256783212379" style="color: #44403c; text-decoration: none;">+256 783 212 379</a></td></tr>
+                  <tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr><td colspan="2" style="padding-top: 12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div id="custom-signatures"></div>
+    </div>
+
+    <!-- Create new -->
+    <div class="create-section" id="create-section">
+      <div class="create-trigger" id="create-trigger" onclick="toggleCreateForm()">
+        <div class="plus">+</div>
+        <span>Create new signature</span>
+      </div>
+      <div class="create-form" id="create-form">
+        <div style="height: 16px;"></div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Name</label>
+            <input type="text" id="new-name" placeholder="e.g. Memory Naggita">
+          </div>
+          <div class="form-field">
+            <label>Title / Role</label>
+            <input type="text" id="new-title" placeholder="e.g. Founder & CEO">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" id="new-email" placeholder="e.g. name@keystonetalent.xyz">
+          </div>
+          <div class="form-field">
+            <label>Phone</label>
+            <input type="tel" id="new-phone" placeholder="e.g. +256 783 212 379">
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button class="btn-create" onclick="createSignature()">Create</button>
+          <button class="btn-cancel" onclick="toggleCreateForm()">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Gmail Preview -->
   <div class="right-col">
+    <div class="preview-label">Preview</div>
     <div class="gmail-preview">
       <div class="gmail-window">
         <div class="gmail-titlebar">
@@ -274,31 +301,38 @@
 </div>
 
 <script>
+function toggleHelp() {
+  document.getElementById('help-panel').classList.toggle('open');
+}
+
+function toggleCreateForm() {
+  document.getElementById('create-form').classList.toggle('open');
+  document.getElementById('create-trigger').style.display =
+    document.getElementById('create-form').classList.contains('open') ? 'none' : 'flex';
+}
+
 function selectSignature(id, wrapper) {
-  // Update active state
-  document.querySelectorAll('.sig-wrapper').forEach(w => w.classList.remove('active'));
+  document.querySelectorAll('.sig-wrapper').forEach(function(w) { w.classList.remove('active'); });
   wrapper.classList.add('active');
-  // Clone signature into preview
-  const sig = document.getElementById(id);
+  var sig = document.getElementById(id);
   document.getElementById('preview-target').innerHTML = sig.innerHTML;
 }
 
-function copySignature(id, event) {
+function copySignature(id, event, btn) {
   event.stopPropagation();
-  const el = document.getElementById(id);
-  const range = document.createRange();
+  var el = document.getElementById(id);
+  var range = document.createRange();
   range.selectNodeContents(el);
-  const sel = window.getSelection();
+  var sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
   document.execCommand('copy');
   sel.removeAllRanges();
 
-  const btn = event.target;
-  const original = btn.textContent;
+  var original = btn.textContent;
   btn.textContent = 'Copied!';
-  btn.style.background = '#16a34a';
-  setTimeout(() => { btn.textContent = original; btn.style.background = '#1D1D1D'; }, 2000);
+  btn.classList.add('copied');
+  setTimeout(function() { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
 }
 
 var sigCounter = 0;
@@ -309,71 +343,42 @@ function createSignature() {
   var title = document.getElementById('new-title').value.trim();
   var email = document.getElementById('new-email').value.trim();
   var phone = document.getElementById('new-phone').value.trim();
-
-  if (!name || !email) { return; }
+  if (!name || !email) return;
 
   sigCounter++;
   var sigId = 'sig-custom-' + sigCounter;
 
   var sigHtml = '<table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, \'Times New Roman\', serif; color: #1D1D1D; line-height: 1.4;">' +
-    '<tr>' +
-    '<td style="padding-right: 14px; vertical-align: top;">' +
-    '<a href="https://keystonetalent.xyz" style="text-decoration: none;">' +
-    '<img src="' + logoBase64 + '" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />' +
-    '</a></td>' +
-    '<td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">' +
-    '<table cellpadding="0" cellspacing="0" border="0">' +
+    '<tr><td style="padding-right: 14px; vertical-align: top;"><a href="https://keystonetalent.xyz" style="text-decoration: none;"><img src="' + logoBase64 + '" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" /></a></td>' +
+    '<td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;"><table cellpadding="0" cellspacing="0" border="0">' +
     '<tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, \'Times New Roman\', serif; padding-bottom: 2px;">' + escapeHtml(name) + '</td></tr>' +
     (title ? '<tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">' + escapeHtml(title) + '</td></tr>' : '') +
     '</table></td>' +
-    '<td style="padding-left: 16px; vertical-align: top;">' +
-    '<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-size: 13px; color: #44403c;">' +
+    '<td style="padding-left: 16px; vertical-align: top;"><table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-size: 13px; color: #44403c;">' +
     '<tr><td style="padding-bottom: 3px;"><a href="mailto:' + escapeHtml(email) + '" style="color: #44403c; text-decoration: none;">' + escapeHtml(email) + '</a></td></tr>' +
     (phone ? '<tr><td style="padding-bottom: 3px;"><a href="tel:' + escapeHtml(phone.replace(/\s/g, '')) + '" style="color: #44403c; text-decoration: none;">' + escapeHtml(phone) + '</a></td></tr>' : '') +
     '<tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>' +
     '</table></td></tr>' +
-    '<tr><td colspan="2" style="padding-top: 12px;">' +
-    '<table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>' +
-    '</td></tr></table>';
-
-  var container = document.getElementById('custom-signatures');
+    '<tr><td colspan="2" style="padding-top: 12px;"><table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table></td></tr></table>';
 
   var wrapper = document.createElement('div');
   wrapper.className = 'sig-wrapper';
   wrapper.onclick = function() { selectSignature(sigId, wrapper); };
-  wrapper.innerHTML = '<div id="' + sigId + '">' + sigHtml + '</div>';
+  wrapper.innerHTML = '<div class="card-actions"><button class="action-btn" onclick="copySignature(\'' + sigId + '\', event, this)">Copy</button><button class="action-btn delete" onclick="removeSignature(event, this)">Remove</button></div><div id="' + sigId + '">' + sigHtml + '</div>';
 
-  var btnGroup = document.createElement('div');
-  btnGroup.style.display = 'flex';
-  btnGroup.style.alignItems = 'center';
-  btnGroup.style.marginBottom = '32px';
+  document.getElementById('custom-signatures').appendChild(wrapper);
 
-  var copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.textContent = 'Copy HTML';
-  copyBtn.onclick = function(e) { copySignature(sigId, e); };
-
-  var deleteBtn = document.createElement('button');
-  deleteBtn.className = 'delete-btn';
-  deleteBtn.textContent = 'Remove';
-  deleteBtn.onclick = function() {
-    wrapper.remove();
-    btnGroup.remove();
-  };
-
-  btnGroup.appendChild(copyBtn);
-  btnGroup.appendChild(deleteBtn);
-  container.appendChild(wrapper);
-  container.appendChild(btnGroup);
-
-  // Clear form
   document.getElementById('new-name').value = '';
   document.getElementById('new-title').value = '';
   document.getElementById('new-email').value = '';
   document.getElementById('new-phone').value = '';
-
-  // Select the new signature
+  toggleCreateForm();
   selectSignature(sigId, wrapper);
+}
+
+function removeSignature(event, btn) {
+  event.stopPropagation();
+  btn.closest('.sig-wrapper').remove();
 }
 
 function escapeHtml(str) {
@@ -382,7 +387,7 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// Initialize preview with first signature
+// Initialize preview
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('preview-target').innerHTML = document.getElementById('sig-memory').innerHTML;
 });
