@@ -21,6 +21,20 @@
   .instructions h2 { margin-top: 0; font-size: 18px; color: #1D1D1D; }
   .instructions ol { color: #44403c; line-height: 1.7; padding-left: 20px; }
 
+  /* Create form */
+  .create-form { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px 32px; margin-bottom: 40px; }
+  .create-form h2 { margin-top: 0; font-size: 18px; color: #1D1D1D; margin-bottom: 16px; }
+  .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .form-row.full { display: block; }
+  .form-field { flex: 1; }
+  .form-field label { display: block; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
+  .form-field input { width: 100%; padding: 8px 12px; border: 1px solid #d6d3d1; border-radius: 6px; font-size: 14px; font-family: inherit; color: #1D1D1D; background: #fff; }
+  .form-field input:focus { outline: none; border-color: #C9A87F; }
+  .create-btn { background: #C9A87F; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
+  .create-btn:hover { background: #b8956e; }
+  .delete-btn { background: none; border: none; color: #a8a29e; font-size: 12px; cursor: pointer; margin-left: 8px; }
+  .delete-btn:hover { color: #ef4444; }
+
   /* Gmail preview */
   .gmail-preview { background: #c8cfc4; border-radius: 16px; padding: 16px; }
   .gmail-window { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
@@ -204,6 +218,33 @@
       </div>
     </div>
     <button class="copy-btn" onclick="copySignature('sig-finance', event)">Copy HTML</button>
+
+    <div id="custom-signatures"></div>
+
+    <div class="create-form">
+      <h2>Create New Signature</h2>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" id="new-name" placeholder="e.g. Memory Naggita">
+        </div>
+        <div class="form-field">
+          <label>Title / Role</label>
+          <input type="text" id="new-title" placeholder="e.g. Founder & CEO">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" id="new-email" placeholder="e.g. name@keystonetalent.xyz">
+        </div>
+        <div class="form-field">
+          <label>Phone</label>
+          <input type="tel" id="new-phone" placeholder="e.g. +256 783 212 379">
+        </div>
+      </div>
+      <button class="create-btn" onclick="createSignature()">Create Signature</button>
+    </div>
   </div>
 
   <!-- Gmail Preview -->
@@ -258,6 +299,87 @@ function copySignature(id, event) {
   btn.textContent = 'Copied!';
   btn.style.background = '#16a34a';
   setTimeout(() => { btn.textContent = original; btn.style.background = '#1D1D1D'; }, 2000);
+}
+
+var sigCounter = 0;
+var logoBase64 = document.querySelector('#sig-memory img').src;
+
+function createSignature() {
+  var name = document.getElementById('new-name').value.trim();
+  var title = document.getElementById('new-title').value.trim();
+  var email = document.getElementById('new-email').value.trim();
+  var phone = document.getElementById('new-phone').value.trim();
+
+  if (!name || !email) { return; }
+
+  sigCounter++;
+  var sigId = 'sig-custom-' + sigCounter;
+
+  var sigHtml = '<table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, \'Times New Roman\', serif; color: #1D1D1D; line-height: 1.4;">' +
+    '<tr>' +
+    '<td style="padding-right: 14px; vertical-align: top;">' +
+    '<a href="https://keystonetalent.xyz" style="text-decoration: none;">' +
+    '<img src="' + logoBase64 + '" alt="Keystone Talent" width="50" style="display: block; border-radius: 6px;" />' +
+    '</a></td>' +
+    '<td style="padding-right: 16px; border-right: 2px solid #C9A87F; vertical-align: top;">' +
+    '<table cellpadding="0" cellspacing="0" border="0">' +
+    '<tr><td style="font-size: 18px; font-weight: 700; color: #1D1D1D; font-family: Georgia, \'Times New Roman\', serif; padding-bottom: 2px;">' + escapeHtml(name) + '</td></tr>' +
+    (title ? '<tr><td style="font-size: 13px; color: #C9A87F; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; font-weight: 600; padding-bottom: 10px;">' + escapeHtml(title) + '</td></tr>' : '') +
+    '</table></td>' +
+    '<td style="padding-left: 16px; vertical-align: top;">' +
+    '<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-size: 13px; color: #44403c;">' +
+    '<tr><td style="padding-bottom: 3px;"><a href="mailto:' + escapeHtml(email) + '" style="color: #44403c; text-decoration: none;">' + escapeHtml(email) + '</a></td></tr>' +
+    (phone ? '<tr><td style="padding-bottom: 3px;"><a href="tel:' + escapeHtml(phone.replace(/\s/g, '')) + '" style="color: #44403c; text-decoration: none;">' + escapeHtml(phone) + '</a></td></tr>' : '') +
+    '<tr><td><a href="https://keystonetalent.xyz" style="color: #C9A87F; text-decoration: none; font-weight: 600;">keystonetalent.xyz</a></td></tr>' +
+    '</table></td></tr>' +
+    '<tr><td colspan="2" style="padding-top: 12px;">' +
+    '<table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size: 11px; color: #a8a29e; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif; font-style: italic;">People. Structure. Process.</td></tr></table>' +
+    '</td></tr></table>';
+
+  var container = document.getElementById('custom-signatures');
+
+  var wrapper = document.createElement('div');
+  wrapper.className = 'sig-wrapper';
+  wrapper.onclick = function() { selectSignature(sigId, wrapper); };
+  wrapper.innerHTML = '<div id="' + sigId + '">' + sigHtml + '</div>';
+
+  var btnGroup = document.createElement('div');
+  btnGroup.style.display = 'flex';
+  btnGroup.style.alignItems = 'center';
+  btnGroup.style.marginBottom = '32px';
+
+  var copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = 'Copy HTML';
+  copyBtn.onclick = function(e) { copySignature(sigId, e); };
+
+  var deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.textContent = 'Remove';
+  deleteBtn.onclick = function() {
+    wrapper.remove();
+    btnGroup.remove();
+  };
+
+  btnGroup.appendChild(copyBtn);
+  btnGroup.appendChild(deleteBtn);
+  container.appendChild(wrapper);
+  container.appendChild(btnGroup);
+
+  // Clear form
+  document.getElementById('new-name').value = '';
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-email').value = '';
+  document.getElementById('new-phone').value = '';
+
+  // Select the new signature
+  selectSignature(sigId, wrapper);
+}
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 // Initialize preview with first signature
