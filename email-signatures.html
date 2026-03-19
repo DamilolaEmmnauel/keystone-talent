@@ -5,9 +5,9 @@
 <title>Keystonetalent Email Signatures</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f4; padding: 40px; }
-  .sig-wrapper { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 32px; max-width: 620px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .sig-wrapper { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 8px; max-width: 620px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .sig-label { display: none; }
-  .copy-btn { background: #1D1D1D; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-top: 12px; }
+  .copy-btn { background: #1D1D1D; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 32px; }
   .copy-btn:hover { background: #44403c; }
   hr { border: none; border-top: 1px solid #e7e5e4; margin: 8px 0 16px; }
   .instructions { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px 32px; max-width: 620px; margin-bottom: 40px; }
@@ -78,8 +78,8 @@
       </tr>
     </table>
   </div>
-  <button class="copy-btn" onclick="copySignature('sig-memory')">Copy HTML</button>
 </div>
+<button class="copy-btn" onclick="copySignature('sig-memory')">Copy HTML</button>
 
 <!-- ===================== 2. hello@ ===================== -->
 <div class="sig-wrapper">
@@ -129,8 +129,8 @@
       </tr>
     </table>
   </div>
-  <button class="copy-btn" onclick="copySignature('sig-hello')">Copy HTML</button>
 </div>
+<button class="copy-btn" onclick="copySignature('sig-hello')">Copy HTML</button>
 
 <!-- ===================== 3. support@ ===================== -->
 <div class="sig-wrapper">
@@ -180,8 +180,8 @@
       </tr>
     </table>
   </div>
-  <button class="copy-btn" onclick="copySignature('sig-support')">Copy HTML</button>
 </div>
+<button class="copy-btn" onclick="copySignature('sig-support')">Copy HTML</button>
 
 <!-- ===================== 4. finance@ ===================== -->
 <div class="sig-wrapper">
@@ -231,8 +231,8 @@
       </tr>
     </table>
   </div>
-  <button class="copy-btn" onclick="copySignature('sig-finance')">Copy HTML</button>
 </div>
+<button class="copy-btn" onclick="copySignature('sig-finance')">Copy HTML</button>
 
 <script>
 function copySignature(id) {
@@ -245,7 +245,7 @@ function copySignature(id) {
   document.execCommand('copy');
   sel.removeAllRanges();
 
-  const btn = el.parentElement.querySelector('.copy-btn');
+  const btn = el.closest('.sig-wrapper').nextElementSibling;
   const original = btn.textContent;
   btn.textContent = 'Copied!';
   btn.style.background = '#16a34a';
