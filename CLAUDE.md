@@ -113,5 +113,5 @@ Pill-shaped (`border-radius: 90px`), hover lifts up (`translateY(-8px)`). Varian
 - The Webflow export uses `data-w-id` + `style="opacity:0"` for scroll-triggered animations. These are only in index.html. New pages omit them intentionally (Webflow's JS won't recognize new pages, so opacity:0 elements would stay invisible).
 - `webflow.js` handles: navbar toggle, slider, accordion open/close, scroll animations
 - Contact email: info@keystonetalent.xyz
-- Address: 8th Floor, The Offices 4, One Central Dubai World Trade Center, Dubai
+- Address: The Offices 4, One Central, 8th Floor, Trade Center - Dubai, United Arab Emirates
 - Site credit: "Created by DEA" linking to https://damilola-emmanuel-a.webflow.io/
